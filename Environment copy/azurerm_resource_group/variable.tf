@@ -1,0 +1,3 @@
+variable "prod-rg" {
+  
+}
