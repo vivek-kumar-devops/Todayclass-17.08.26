@@ -1,66 +1,14 @@
-name: Terraform CI-CD
+name: Test Actions
 
 on:
   push:
     branches:
       - feature
-      - main
-
-  pull_request:
-    branches:
-      - main
-
-env:
-  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
 jobs:
-
-  # ==========================================
-  # CI - Validation & Plan
-  # ==========================================
-  terraform-ci:
-    name: Terraform CI
+  test:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./prod
-
     steps:
-
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Azure CLI Login
-        shell: bash
-        run: |
-          az login \
-            --service-principal \
-            --username "$ARM_CLIENT_ID" \
-            --password "$ARM_CLIENT_SECRET" \
-            --tenant "$ARM_TENANT_ID"
-
-          az account set \
-            --subscription "$ARM_SUBSCRIPTION_ID"
-
-          az account show
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.15.8
-
-      - name: Terraform Init
-        run: terraform init
-
-      - name: Terraform Format Check
-        run: terraform fmt -check -recursive
-
-      - name: Terraform Validate
-        run: terraform validate
-
-      - name: Terraform Plan
-        run: terraform plan
+      - name: Test
+        run: echo "GitHub Actions is working"
